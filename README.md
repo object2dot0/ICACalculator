@@ -1,5 +1,4 @@
-## Synopsis
--------------
+## Introduction
 
 This project shows calculator of carlist.my for the iOS and Android apps in react native.
 
