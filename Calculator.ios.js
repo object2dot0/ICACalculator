@@ -9,7 +9,8 @@ var {
   TouchableHighlight,
   ActivityIndicatorIOS,
   Image,
-  Component
+  Component,
+  Slider
 } = React;
 
 
@@ -19,8 +20,21 @@ class Calculator extends Component {
   super(props);
   this.state = {
     carPrice: '',
-    depositAmount: ''
+    depositAmount: '',
+    repaymentPeriod: 7,
+    repaymentPeriodMinYear: 1,
+    repaymentPeriodMaxYear: 9,
+    interestRate: 3,
+    interestRateMin : 1,
+    interestRateMax : 5,
+    monthlyInstallment:0,
+        
   };
+}
+
+calculateMonthlyInstallment() {
+  this.state.monthlyInstallment = this.state.repaymentPeriod
+  var rapaymentPeriodInMonths = this.state.repaymentPeriod * 12
 }
 
   render() {
@@ -39,7 +53,7 @@ class Calculator extends Component {
             RM </Text>
             <View style={styles.containerTextInput}>
               <TextInput style={styles.textInput}
-                  onChangeText={(text) => this.setState({carPrice})}
+                  onChangeText={(text) => this.setState({carPrice:text})}
                   value={this.state.carPrice}
                   placeholder='Please enter car price' />
               </View>
@@ -56,10 +70,72 @@ class Calculator extends Component {
             RM </Text>
             <View style={styles.containerTextInput}>
               <TextInput style={styles.textInput}
-                  onChangeText={(text) => this.setState({depositAmount})}
+                  onChangeText={(text) => this.setState({depositAmount:text})}
                   value={this.state.depositAmount}
                   placeholder='Please enter deposit amount' />
             </View>
+        </View>
+
+
+
+        <View style={styles.labelBackground}>
+          <Text style={styles.label}>
+            Repayment period <Text style={styles.label}> {this.state.repaymentPeriod  +' years(s)'} </Text>
+          </Text>
+        </View>
+        <View style={styles.containerSlider}>
+            <Slider style={styles.slider} 
+            onValueChange = {(value) => this.setState({repaymentPeriod: value})}
+            minimumValue={this.state.repaymentPeriodMinYear}
+            maximumValue={this.state.repaymentPeriodMaxYear}
+            step={1}
+            value={this.state.repaymentPeriod} 
+            onSlidingComplete={this.calculateMonthlyInstallment()}/>
+
+            <View style= {styles.sliderLabelsContainer}>
+                <Text style= {styles.sliderLabelLeft}>
+                {this.state.repaymentPeriodMinYear +'years(s)'}
+                </Text>
+                <Text style= {styles.sliderLabelRight}>
+                {this.state.repaymentPeriodMaxYear +'years(s)'}
+                </Text>
+            </View>
+        </View>
+
+
+        <View style={styles.labelBackground}>
+          <Text style={styles.label}>
+            Interest rate <Text style={styles.label}> {this.state.interestRate  +'%'} </Text>
+          </Text>
+        </View>
+        <View style={styles.containerSlider}>
+            <Slider style={styles.slider} 
+            onValueChange = {(value) => this.setState({interestRate: value})}
+            minimumValue={this.state.interestRateMin}
+            maximumValue={this.state.interestRateMax}
+            step={0.1}
+            value={this.state.interestRate} />
+
+            <View style= {styles.sliderLabelsContainer}>
+                <Text style= {styles.sliderLabelLeft}>
+                {this.state.interestRateMin +'%'}
+                </Text>
+                <Text style= {styles.sliderLabelRight}>
+                {this.state.interestRateMax +'%'}
+                </Text>
+            </View>
+        </View>
+
+
+        <View style={styles.labelBackground}>
+          <Text style={styles.label}>
+            Monthly installment
+          </Text>
+        </View>
+        <View style={styles.monthlyInstallmentContainer}>
+            <Text style={styles.monthlyInstallment}>
+            {'RM '+this.state.monthlyInstallment } 
+          </Text >
         </View>
 
 
@@ -77,7 +153,7 @@ var InputTextMarginRight = 15;
 var styles = StyleSheet.create({
   container: {
     flex:1,
-    backgroundColor: '#5AC8FA'
+    backgroundColor: '#efefef'
   },
   label: {
     fontSize: 12,
@@ -111,7 +187,36 @@ var styles = StyleSheet.create({
   fontSize: 14,
   color: '#48BBEC',
   width: windowSize.width - InputTextMarginRight - containerInputLabelMarginLeft - containerInputLabelWidth,
-
+},
+containerSlider: {
+    backgroundColor: '#ffffff',
+    height:80,
+    justifyContent:'center',
+    alignItems:'center'
+  },
+slider: {
+  height: 40,
+  width: windowSize.width - InputTextMarginRight - containerInputLabelMarginLeft - containerInputLabelWidth,
+},
+sliderLabelsContainer: {
+  flexDirection:'row',
+  width: windowSize.width - InputTextMarginRight - containerInputLabelMarginLeft - containerInputLabelWidth,
+  justifyContent:'space-between'
+},
+monthlyInstallmentContainer:{
+  justifyContent:'center',
+  alignItems: 'flex-start',
+  backgroundColor: '#ffffff',
+  height:80,
+},
+monthlyInstallment:{
+  fontSize: 25,
+  color: '#000000',
+  marginLeft: 15,
+},
+sliderLabelLeft: {
+},
+sliderLabelRight: {
 },
 statusBar:{
 },
