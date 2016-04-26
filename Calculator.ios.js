@@ -24,7 +24,7 @@ class Calculator extends Component {
     repaymentPeriod: 7,
     repaymentPeriodMinYear: 1,
     repaymentPeriodMaxYear: 9,
-    interestRate: 3,
+    interestRate: 3.0,
     interestRateMin : 1,
     interestRateMax : 5,
     monthlyInstallment:0,
@@ -33,8 +33,24 @@ class Calculator extends Component {
 }
 
 calculateMonthlyInstallment() {
-  this.state.monthlyInstallment = this.state.repaymentPeriod
-  var rapaymentPeriodInMonths = this.state.repaymentPeriod * 12
+  if (this.state.carPrice>0 && this.state.depositAmount>0) {
+  var rapaymentPeriodInMonths = this.state.repaymentPeriod *12.0
+  var loadAmount = this.state.carPrice - this.state.depositAmount
+  var interestRate=this.state.interestRate/100.0;
+  var interestAmount=interestRate*loadAmount
+  var interestAmountMonthly=interestAmount/12.0
+  var interestAmountTotal=interestAmountMonthly * rapaymentPeriodInMonths
+  var loadAmountPlusInterest = loadAmount + interestAmountTotal
+  var monthlyInstallment = loadAmountPlusInterest / rapaymentPeriodInMonths
+  if (monthlyInstallment > 0) {
+    this.state.monthlyInstallment = monthlyInstallment
+  }else{
+    this.state.monthlyInstallment = 0
+  }
+  }else{
+    this.state.monthlyInstallment = 0
+  }
+  
 }
 
   render() {
@@ -55,7 +71,8 @@ calculateMonthlyInstallment() {
               <TextInput style={styles.textInput}
                   onChangeText={(text) => this.setState({carPrice:text})}
                   value={this.state.carPrice}
-                  placeholder='Please enter car price' />
+                  placeholder='Please enter car price' 
+                  keyboardType= 'numeric'/>
               </View>
         </View>
 
@@ -72,7 +89,8 @@ calculateMonthlyInstallment() {
               <TextInput style={styles.textInput}
                   onChangeText={(text) => this.setState({depositAmount:text})}
                   value={this.state.depositAmount}
-                  placeholder='Please enter deposit amount' />
+                  placeholder='Please enter deposit amount' 
+                  keyboardType= 'numeric'/>
             </View>
         </View>
 
@@ -134,7 +152,7 @@ calculateMonthlyInstallment() {
         </View>
         <View style={styles.monthlyInstallmentContainer}>
             <Text style={styles.monthlyInstallment}>
-            {'RM '+this.state.monthlyInstallment } 
+            {'RM '+this.state.monthlyInstallment.toFixed(0) } 
           </Text >
         </View>
 
