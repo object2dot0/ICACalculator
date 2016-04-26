@@ -10,7 +10,8 @@ var {
   ActivityIndicatorIOS,
   Image,
   Component,
-  Slider
+  Slider,
+  ScrollView
 } = React;
 
 
@@ -55,7 +56,7 @@ calculateMonthlyInstallment() {
 
   render() {
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <View style={styles.statusBar}>
           <Text ></Text>
         </View>
@@ -157,7 +158,7 @@ calculateMonthlyInstallment() {
         </View>
 
 
-</View>
+</ScrollView>
   );
   }
 }
